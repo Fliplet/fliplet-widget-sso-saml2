@@ -5,10 +5,9 @@ Fliplet().then(function () {
     event.preventDefault();
 
     Fliplet.Widget.save({
-      entity_id: $('[name="entity_id"]').val(),
-      private_key: $('[name="private_key"]').val(),
-      certificate: $('[name="certificate"]').val(),
-      assert_endpoint: $('[name="assert_endpoint"]').val()
+      sso_login_url: $('[name="sso_login_url"]').val(),
+      sso_logout_url: $('[name="sso_logout_url"]').val(),
+      certificates: $('[name="certificates"]').val()
     }).then(function () {
       Fliplet.Widget.complete();
     });

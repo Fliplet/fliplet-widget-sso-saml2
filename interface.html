@@ -2,38 +2,29 @@
   <form class="form-horizontal">
     <div class="form-group">
       <div class="col-sm-4 control-label">
-        <label for="entity_id">Entity ID*</label>
+        <label for="sso_login_url">SSO Login URL*</label>
       </div>
       <div class="col-sm-8">
-        <input type="text" class="form-control" id="entity_id" name="entity_id" value="{{entity_id}}" required/>
-        <h6>Unique identifier for the service provider, often the URL of the metadata file.</h6>
+        <input type="text" class="form-control" id="sso_login_url" name="sso_login_url" value="{{sso_login_url}}" required/>
+        <h6>Login url to use during a login request.</h6>
       </div>
     </div>
     <div class="form-group">
       <div class="col-sm-4 control-label">
-        <label for="assert_endpoint">Assert endpoint*</label>
+        <label for="sso_logout_url">SSO Logout URL*</label>
       </div>
       <div class="col-sm-8">
-        <input type="text" class="form-control" id="assert_endpoint" name="assert_endpoint" value="{{assert_endpoint}}" required/>
-        <h6>URL of service provider assert endpoint.</h6>
+        <input type="text" class="form-control" id="sso_logout_url" name="sso_logout_url" value="{{sso_logout_url}}" required/>
+        <h6>Logout url to use during a logout request.</h6>
       </div>
     </div>
     <div class="form-group">
       <div class="col-sm-4 control-label">
-        <label for="private_key">Private Key</label>
+        <label for="certificates">Certificates*</label>
       </div>
       <div class="col-sm-8">
-        <textarea class="form-control" id="private_key" name="private_key" required>{{private_key}}</textarea>
-        <h6><strong>PEM format string</strong> - Private key for the service provider.</h6>
-      </div>
-    </div>
-    <div class="form-group">
-      <div class="col-sm-4 control-label">
-        <label for="certificate">Certificate</label>
-      </div>
-      <div class="col-sm-8">
-        <textarea class="form-control" id="certificate" name="certificate" required>{{certificate}}</textarea>
-        <h6><strong>PEM format string</strong> - Certificate for the service provider.</h6>
+        <textarea class="form-control" id="certificates" name="certificates" required>{{certificates}}</textarea>
+        <h6><strong>PEM format string</strong> - Certificate or list of certificates for the identity provider.</h6>
       </div>
     </div>
   </form>
