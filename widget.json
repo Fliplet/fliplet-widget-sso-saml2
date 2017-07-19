@@ -19,6 +19,9 @@
   "build": {
     "dependencies": [
       "fliplet-core"
+    ],
+    "assets": [
+      "js/build.js"
     ]
   }
 }
