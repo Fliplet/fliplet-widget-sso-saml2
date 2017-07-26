@@ -13,9 +13,11 @@ Fliplet().then(function () {
     event.preventDefault();
 
     Fliplet.Widget.save({
-      sso_login_url: $('[name="sso_login_url"]').val(),
-      sso_logout_url: $('[name="sso_logout_url"]').val(),
-      certificates: $('[name="certificates"]').val()
+      idp: {
+        sso_login_url: $('[name="sso_login_url"]').val(),
+        sso_logout_url: $('[name="sso_logout_url"]').val(),
+        certificates: $('[name="certificates"]').val()
+      }
     }).then(function () {
       Fliplet.Widget.complete();
     });
