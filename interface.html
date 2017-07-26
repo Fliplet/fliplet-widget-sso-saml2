@@ -6,7 +6,7 @@
         <label for="sso_login_url">SSO Login URL*</label>
       </div>
       <div class="col-sm-8">
-        <input type="text" class="form-control" id="sso_login_url" name="sso_login_url" value="{{sso_login_url}}" required/>
+        <input type="text" class="form-control" id="sso_login_url" name="sso_login_url" value="{{idp.sso_login_url}}" required/>
         <h6>Login url to use during a login request.</h6>
       </div>
     </div>
@@ -15,7 +15,7 @@
         <label for="sso_logout_url">SSO Logout URL*</label>
       </div>
       <div class="col-sm-8">
-        <input type="text" class="form-control" id="sso_logout_url" name="sso_logout_url" value="{{sso_logout_url}}" required/>
+        <input type="text" class="form-control" id="sso_logout_url" name="sso_logout_url" value="{{idp.sso_logout_url}}" required/>
         <h6>Logout url to use during a logout request.</h6>
       </div>
     </div>
@@ -24,7 +24,7 @@
         <label for="certificates">Certificates*</label>
       </div>
       <div class="col-sm-8">
-        <textarea class="form-control" id="certificates" name="certificates" required>{{certificates}}</textarea>
+        <textarea class="form-control" id="certificates" name="certificates" required>{{idp.certificates}}</textarea>
         <h6><strong>PEM format string</strong> - Certificate or list of certificates for the identity provider.</h6>
       </div>
     </div>
