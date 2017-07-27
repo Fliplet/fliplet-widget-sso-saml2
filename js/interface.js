@@ -5,7 +5,7 @@ Fliplet().then(function () {
 
   $('#entity_id').html(
     appId
-    ? Fliplet.Env.get('apiUrl') + 'v1/session/providers/saml2/metadata?appId=' + appId
+    ? Fliplet.Env.get('apiUrl') + 'v1/session/providers/saml2/metadata?appId=' + appId + '&auth_token=' + Fliplet.User.getAuthToken()
     : 'App ID invalid'
   );
 
