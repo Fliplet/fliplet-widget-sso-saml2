@@ -1,8 +1,6 @@
 Fliplet().then(function () {
   var appId = Fliplet.Env.get('appId');
 
-  $(window).on('resize', Fliplet.Widget.autosize);
-
   $('#entity_id').html(
     appId
     ? Fliplet.Env.get('apiUrl') + 'v1/session/providers/saml2/metadata?appId=' + appId + '&auth_token=' + Fliplet.User.getAuthToken()
@@ -28,4 +26,6 @@ Fliplet().then(function () {
   Fliplet.Widget.onSaveRequest(function () {
     $('form').submit();
   });
+
+  Fliplet.Widget.autosize();
 });
