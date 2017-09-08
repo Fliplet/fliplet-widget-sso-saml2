@@ -9,11 +9,11 @@ Fliplet().then(function() {
 
   var clipboard = new Clipboard('#entity_id');
   clipboard.on('success', function(e) {
-    $('#entity_id').html('Copied! <i class="fa fa-check"></i>');
+    $('#entity_id').html('Copied to clipboard <i class="fa fa-check"></i>');
     e.clearSelection();
 
     setTimeout(function() {
-      $('#entity_id').html('Copy to clipboard <i class="fa fa-clipboard"></i>');
+      $('#entity_id').html('Copy link to XML file <i class="fa fa-clipboard"></i>');
     }, 2000);
   });
 
