@@ -1,33 +1,42 @@
 <form class="widget-holder form-horizontal">
-  <h3><small>Single sign-on provider</small></h3>
+  <h3><small>Single sign-on - SAML2</small></h3>
   <div class="form-group">
     <div class="col-sm-4 control-label">
-      <label for="sso_login_url">Single sign-on login URL*</label>
+      <label for="sso_login_url">Single sign-on login URL</label>
     </div>
     <div class="col-sm-8">
       <input type="text" class="form-control" id="sso_login_url" name="sso_login_url" value="{{idp.sso_login_url}}" required/>
-      <p class="help-block">Login url to use during a login request.</p>
+      <p class="help-block"><small>Login URL to use during a login request.</small></p>
     </div>
   </div>
   <div class="form-group">
     <div class="col-sm-4 control-label">
-      <label for="sso_logout_url">Single sign-on logout URL*</label>
+      <label for="sso_logout_url">Single sign-on logout URL</label>
     </div>
     <div class="col-sm-8">
       <input type="text" class="form-control" id="sso_logout_url" name="sso_logout_url" value="{{idp.sso_logout_url}}" required/>
-      <p class="help-block">Logout url to use during a logout request.</p>
+      <p class="help-block"><small>Logout URL to use during a logout request</small></p>
     </div>
   </div>
   <div class="form-group">
     <div class="col-sm-4 control-label">
-      <label for="certificates">Certificates*</label>
+      <label for="certificates">Certificates</label>
     </div>
     <div class="col-sm-8">
       <textarea class="form-control" id="certificates" name="certificates" required>{{idp.certificates}}</textarea>
-      <p class="help-block"><strong>PEM format string</strong> - Certificate or list of certificates for the identity provider.</p>
+      <p class="help-block"><small><strong><a href="https://en.wikipedia.org/wiki/Privacy-enhanced_Electronic_Mail" title="Learn more" target="_blank">PEM format string</a></strong> - Certificate or list of certificates</small></p>
     </div>
   </div>
-  <h3><small>Service provider</small></h3>
-  <label for="certificates">XML Metadata</label>
-  <p id="entity_id"></p>
+  <h3><small>Fliplet certificates</small></h3>
+  <div class="form-group">
+    <div class="col-sm-12 control-label">
+      <label>Certificates - XML Metadata</label>
+      <p class="help-block"><small>You will need these certificates to establish a trusted connection between services</small></p>
+    </div>
+    <div class="col-sm-12">
+      <button type="button" id="entity_id" class="btn btn-default" data-clipboard-text="">
+        Copy to clipboard <i class="fa fa-clipboard"></i>
+      </button>
+    </div>
+  </div>
 </form>
