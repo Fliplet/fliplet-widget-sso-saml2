@@ -16,7 +16,7 @@ Fliplet.Widget.register('com.fliplet.sso.saml2', function registerComponent() {
                 return resolve();
               }
 
-              reject('You didn\'t finish the login process, try again!');
+              reject('You didn\'t finish the login process.');
             });
           }
         });
