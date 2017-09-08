@@ -1,6 +1,6 @@
 Fliplet.Widget.register('com.fliplet.sso.saml2', function registerComponent() {
   return {
-    authorize: function (opts) {
+    authorize: function(opts) {
       return new Promise(function(resolve, reject) {
         Fliplet.Navigate.to({
           action: 'url',
@@ -10,13 +10,13 @@ Fliplet.Widget.register('com.fliplet.sso.saml2', function registerComponent() {
           //   // resolve when authentication flow is done
           //   resolve(message);
           // },
-          onclose: function () {
-            Fliplet.Session.get().then(function (session) {
+          onclose: function() {
+            Fliplet.Session.get().then(function(session) {
               if (session.server.passports.saml2) {
                 return resolve();
               }
 
-              reject('Not logged in');
+              reject('You didn\'t finish the login process.');
             });
           }
         });

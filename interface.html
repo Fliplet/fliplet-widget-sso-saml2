@@ -1,36 +1,38 @@
-<div class="container-fluid">
-  <h3>IdentityProvider</h3>
-  <form class="form-horizontal">
-    <div class="form-group">
-      <div class="col-sm-4 control-label">
-        <label for="sso_login_url">SSO Login URL*</label>
-      </div>
-      <div class="col-sm-8">
-        <input type="text" class="form-control" id="sso_login_url" name="sso_login_url" value="{{idp.sso_login_url}}" required/>
-        <h6>Login url to use during a login request.</h6>
-      </div>
+<form class="widget-holder form-horizontal">
+  <div class="form-group">
+    <div class="col-sm-4 control-label">
+      <label for="sso_login_url">Single sign-on login URL</label>
     </div>
-    <div class="form-group">
-      <div class="col-sm-4 control-label">
-        <label for="sso_logout_url">SSO Logout URL*</label>
-      </div>
-      <div class="col-sm-8">
-        <input type="text" class="form-control" id="sso_logout_url" name="sso_logout_url" value="{{idp.sso_logout_url}}" required/>
-        <h6>Logout url to use during a logout request.</h6>
-      </div>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" id="sso_login_url" name="sso_login_url" value="{{idp.sso_login_url}}" required/>
     </div>
-    <div class="form-group">
-      <div class="col-sm-4 control-label">
-        <label for="certificates">Certificates*</label>
-      </div>
-      <div class="col-sm-8">
-        <textarea class="form-control" id="certificates" name="certificates" required>{{idp.certificates}}</textarea>
-        <h6><strong>PEM format string</strong> - Certificate or list of certificates for the identity provider.</h6>
-      </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-4 control-label">
+      <label for="sso_logout_url">Single sign-on logout URL</label>
     </div>
-    <hr />
-    <h3>ServiceProvider</h3>
-    <label for="certificates">XML Metadata</label>
-    <p id="entity_id"></p>
-  </form>
-</div>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" id="sso_logout_url" name="sso_logout_url" value="{{idp.sso_logout_url}}" required/>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-4 control-label">
+      <label for="certificates">Your identity provider certificate(s)</label>
+      <p class="help-block"><small>Paste the <a href="https://en.wikipedia.org/wiki/Privacy-enhanced_Electronic_Mail" title="Learn more" target="_blank">PEM format string</a> for your certificate(s)</small></p>
+    </div>
+    <div class="col-sm-8">
+      <textarea class="form-control" id="certificates" name="certificates" required>{{idp.certificates}}</textarea>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-12 control-label">
+      <label>Fliplet's provider metadata</label>
+      <p class="help-block"><small>To establish a trusted connection between Fliplet and your provider, use the XML linked below. This contains Fliplet's provider information such as certificates and login/logout URLs.</small></p>
+    </div>
+    <div class="col-sm-12">
+      <button type="button" id="entity_id" class="btn btn-default" data-clipboard-text="">
+        Copy link to metadata XML <i class="fa fa-clipboard"></i>
+      </button>
+    </div>
+  </div>
+</form>
