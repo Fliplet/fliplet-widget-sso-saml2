@@ -3,9 +3,10 @@ Fliplet().then(function() {
 
   $(window).on('resize', Fliplet.Widget.autosize);
 
-  $('#entity_id').attr('data-clipboard-text', appId ?
-    Fliplet.Env.get('apiUrl') + 'v1/session/providers/saml2/metadata?appId=' + appId + '&auth_token=' + Fliplet.User.getAuthToken() :
-    'App ID invalid');
+  $('#entity_id').attr('data-clipboard-text', appId
+    ? Fliplet.Env.get('apiUrl') + 'v1/session/providers/saml2/metadata?appId=' + appId
+    : 'App ID invalid'
+  );
 
   var clipboard = new Clipboard('#entity_id');
   clipboard.on('success', function(e) {
