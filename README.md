@@ -11,6 +11,6 @@ Fliplet.Widget.get('com.fliplet.sso.saml2')
   })
 ```
 
-To test out the integration you can set up a serverless server using https://github.com/capriza/samling
+To test out the integration, follow the instructions [here](https://github.com/Fliplet/fliplet-widget-login-saml2/blob/master/README.md)
 
 The frontend for this component is found at https://github.com/Fliplet/fliplet-widget-login-saml2
