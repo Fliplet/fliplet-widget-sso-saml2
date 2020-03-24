@@ -9,6 +9,9 @@ Fliplet.Widget.register('com.fliplet.sso.saml2', function registerComponent() {
       // ref: https://www.chromium.org/updates/same-site/incompatible-clients
       if (Modernizr.ios && Fliplet.Navigator.device().version.indexOf('12') === 0) {
         inAppBrowser = false;
+
+        // Allow pause/resume events to be registered
+        opts.basicAuth = true;
       }
 
       return new Promise(function(resolve, reject) {
