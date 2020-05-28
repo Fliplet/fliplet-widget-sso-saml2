@@ -7,7 +7,7 @@ Fliplet.Widget.register('com.fliplet.sso.saml2', function registerComponent() {
 
       // Use Safari on iOS12 to prevent issues with cookies not being saved.
       // ref: https://www.chromium.org/updates/same-site/incompatible-clients
-      if (Modernizr.ios && Fliplet.Navigator.device().version.indexOf('12') === 0) {
+      if (Modernizr.ios && Fliplet.Navigator.device().version.toString().indexOf('12') === 0) {
         inAppBrowser = false;
 
         // Allow pause/resume events to be registered
