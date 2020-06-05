@@ -35,4 +35,33 @@
       </button>
     </div>
   </div>
+
+  <h3><small>Additional profile data</small></h3>
+  <p class="text-helper">You can optionally add profile data to the SAML2 login</p>
+  <div class="form-group clearfix">
+    <div class="col-sm-4 control-label">
+      <label for="contactsList">Profile data source</label>
+    </div>
+    <div class="col-sm-8">
+      <select name="dataSource" id="contactsList" data-label="select" class="hidden-select form-control" disabled>
+        <option value="none">-- Select a data source</option>
+        <option disabled>------</option>
+        <option value="new">Create a new data source</option>
+        <option disabled>------</option>
+      </select>
+      <small id="manage-data" class="hidden"><a href="#">Edit data source</a></small>
+    </div>
+  </div>
+  <div class="column-selection">
+    <div class="form-group clearfix">
+      <div class="col-sm-4 control-label">
+        <label for="emailColumn">Email address field</label>
+      </div>
+      <div class="col-sm-8">
+        <select name="emailAddress" id="emailColumn" data-label="select" class="hidden-select form-control" disabled>
+          <option value="">-- Please wait...</option>
+        </select>
+      </div>
+    </div>
+  </div>
 </form>
