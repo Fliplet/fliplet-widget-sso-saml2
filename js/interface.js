@@ -2,13 +2,25 @@ Fliplet().then(function() {
   var data = Fliplet.Widget.getData();
   var appId = Fliplet.Env.get('appId');
 
+  if (!$('[name="sso_login_url"]').val()) {
+    data.dynamicEntityId = data.dynamicEntityId || true;
+  }
+
   $(window).on('resize', Fliplet.Widget.autosize);
 
   var $dataSources = $('[name="dataSource"]');
   var $emailAddress = $('[name="emailAddress"]');
 
+  var entityIdUrl = Fliplet.Env.get('apiUrl') + 'v1/session/providers/saml2/metadata';
+
+  if (data.dynamicEntityId) {
+    entityIdUrl += '/' + appId;
+  } else {
+    entityIdUrl += '?appId=' + appId;
+  }
+
   $('#entity_id').attr('data-clipboard-text', appId
-    ? Fliplet.Env.get('apiUrl') + 'v1/session/providers/saml2/metadata?appId=' + appId
+    ? entityIdUrl
     : 'App ID invalid'
   );
 
@@ -35,7 +47,8 @@ Fliplet().then(function() {
       dataSourceId: $dataSources.val(),
       dataSourceEmailColumn: $emailAddress.val() !== 'none'
         ? $emailAddress.val()
-        : undefined
+        : undefined,
+      dynamicEntityId: data.dynamicEntityId,
     }).then(function() {
       Fliplet.Widget.complete();
     });
