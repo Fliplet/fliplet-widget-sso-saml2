@@ -11,16 +11,16 @@ Fliplet().then(function() {
   var $dataSources = $('[name="dataSource"]');
   var $emailAddress = $('[name="emailAddress"]');
 
-  var entityIdUrl = Fliplet.Env.get('apiUrl') + 'v1/session/providers/saml2/metadata';
+  var metadataUrl = Fliplet.Env.get('apiUrl') + 'v1/session/providers/saml2/metadata';
 
   if (data.dynamicEntityId) {
-    entityIdUrl += '/' + appId;
+    metadataUrl += '/' + appId;
   } else {
-    entityIdUrl += '?appId=' + appId;
+    metadataUrl += '?appId=' + appId;
   }
 
   $('#entity_id').attr('data-clipboard-text', appId
-    ? entityIdUrl
+    ? metadataUrl
     : 'App ID invalid'
   );
 
