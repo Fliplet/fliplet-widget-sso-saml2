@@ -3,7 +3,7 @@ Fliplet().then(function() {
   var appId = Fliplet.Env.get('appId');
 
   if (!$('[name="sso_login_url"]').val()) {
-    data.dynamicEntityId = data.dynamicEntityId || true;
+    data.dynamicEntityId = true;
   }
 
   $(window).on('resize', Fliplet.Widget.autosize);
