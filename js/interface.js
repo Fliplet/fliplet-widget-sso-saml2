@@ -79,28 +79,7 @@ Fliplet().then(function() {
       data: dataSourceData,
       onEvent: function(event, dataSource) {
         if (event === 'dataSourceSelect') {
-          $dataColumnsEmail.html(
-            '<option selected value="">-- Select email column</option>'
-          );
-
-          // Appends Column Titles to new Select Box
-          if (dataSource.columns) {
-            dataSource.columns.forEach(function(column) {
-              $dataColumnsEmail.append(
-                '<option value="' + column + '">' + column + '</option>'
-              );
-            });
-          }
-
-          if (data.emailColumn) {
-            dataSource.columns.forEach(function(column) {
-              if (column === data.emailColumn) {
-                $dataColumnsEmail.val(data.emailColumn);
-              }
-            });
-          }
-
-          $('#select-email-field').toggleClass('hidden', !dataSource.id);
+          onDataSourceSelect(dataSource);
         }
       }
     });
@@ -109,6 +88,31 @@ Fliplet().then(function() {
       data.dataSourceId = dataSource.data.id;
       $('form').submit();
     });
+  }
+
+  function onDataSourceSelect(dataSource) {
+    $dataColumnsEmail.html(
+      '<option selected value="">-- Select email column</option>'
+    );
+
+    // Appends Column Titles to new Select Box
+    if (dataSource.columns) {
+      dataSource.columns.forEach(function(column) {
+        $dataColumnsEmail.append(
+          '<option value="' + column + '">' + column + '</option>'
+        );
+      });
+    }
+
+    if (data.emailColumn) {
+      dataSource.columns.forEach(function(column) {
+        if (column === data.emailColumn) {
+          $dataColumnsEmail.val(data.emailColumn);
+        }
+      });
+    }
+
+    $('#select-email-field').toggleClass('hidden', !dataSource.id);
   }
 
   // Load the data source for the contacts
