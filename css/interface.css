@@ -2,6 +2,11 @@
   overflow: hidden;
 }
 
+.fl-widget-provider {
+  border: none;
+  width: 100%;
+}
+
 .widget-holder>h3 {
   margin-top: 0;
 }

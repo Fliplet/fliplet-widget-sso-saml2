@@ -1,6 +1,13 @@
 Fliplet().then(function() {
   var data = Fliplet.Widget.getData();
   var appId = Fliplet.Env.get('appId');
+  var dataSourceProvider = null;
+  var $dataColumnsEmail = $('#emailColumn');
+
+  var fields = [
+    'emailColumn',
+    'expireTimeout'
+  ];
 
   if (!$('[name="sso_login_url"]').val()) {
     data.dynamicEntityId = true;
@@ -9,7 +16,6 @@ Fliplet().then(function() {
   $(window).on('resize', Fliplet.Widget.autosize);
 
   var $dataSources = $('[name="dataSource"]');
-  var $emailAddress = $('[name="emailAddress"]');
 
   var metadataUrl = Fliplet.Env.get('apiUrl') + 'v1/session/providers/saml2/metadata';
 
@@ -36,7 +42,6 @@ Fliplet().then(function() {
 
   $('form').submit(function(event) {
     event.preventDefault();
-
     Fliplet.Widget.save({
       idp: {
         sso_login_url: $('[name="sso_login_url"]').val(),
@@ -44,9 +49,9 @@ Fliplet().then(function() {
         certificates: $('[name="certificates"]').val(),
         allow_unencrypted_assertion: true // This can be optional for future integrations
       },
-      dataSourceId: $dataSources.val(),
-      dataSourceEmailColumn: $emailAddress.val() !== 'none'
-        ? $emailAddress.val()
+      dataSourceId: data.dataSourceId,
+      emailColumn: $dataColumnsEmail.val() !== 'none'
+        ? $dataColumnsEmail.val()
         : undefined,
       dynamicEntityId: data.dynamicEntityId,
     }).then(function() {
@@ -56,138 +61,66 @@ Fliplet().then(function() {
 
   // Fired from Fliplet Studio when the external save button is clicked
   Fliplet.Widget.onSaveRequest(function() {
-    $('form').submit();
+    dataSourceProvider.forwardSaveRequest();
   });
 
   Fliplet.Widget.autosize();
 
-  $('#manage-data').on('click', manageAppData);
+  function initDataSourceProvider(currentDataSourceId) {
+    var dataSourceData = {
+      dataSourceTitle: 'Profile data source',
+      dataSourceId: currentDataSourceId,
+      appId: Fliplet.Env.get('appId'),
+      default: {
+        name: 'Profile data for ' + Fliplet.Env.get('appName'),
+        entries: [],
+        columns: []
+      },
+      accessRules: []
+    };
+  
+    dataSourceProvider = Fliplet.Widget.open('com.fliplet.data-source-provider', {
+      selector: '#dataSourceProvider',
+      data: dataSourceData,
+      onEvent: function(event, dataSource) {
+        if (event === 'dataSourceSelect') {
+          $dataColumnsEmail.html(
+            '<option selected value="">-- Select email column</option>'
+          );
 
-  $dataSources.on('change', function() {
-    var selectedDataSourceId = $(this).val();
-    if (selectedDataSourceId === 'none') {
-      $('#manage-data').addClass('hidden');
-      $('.column-selection').removeClass('show');
-      return;
-    }
+          // Appends Column Titles to new Select Box
+          if (dataSource.columns) {
+            dataSource.columns.forEach(function(column) {
+              $dataColumnsEmail.append(
+                '<option value="' + column + '">' + column + '</option>'
+              );
+            });
+          }
 
-    if (selectedDataSourceId === 'new') {
-      $('#manage-data').addClass('hidden');
-      createDataSource();
-      return;
-    }
+          if (data.emailColumn) {
+            dataSource.columns.forEach(function(column) {
+              if(column === data.emailColumn) {
+                $dataColumnsEmail.val(data.emailColumn);
+              }
+            })
+          }
 
-    $('.column-selection').addClass('show');
-    getColumns(selectedDataSourceId);
-  });
+          $('#select-email-field').toggleClass('hidden', !dataSource.id);
+        }
+      }
+    });
+  
+    dataSourceProvider.then(function(dataSource) {
+      data.dataSourceId = dataSource.data.id;
+      $('form').submit();
+    });
+  };
 
   Fliplet.Studio.onMessage(function(event) {
     if (event.data && event.data.event === 'overlay-close') {
       reloadDataSources(event.data.data.dataSourceId);
     }
   });
-
-  function getColumns(dataSourceId) {
-    if (!dataSourceId || dataSourceId === '') {
-      $('#manage-data').addClass('hidden');
-      return;
-    }
-
-    $('#manage-data').removeClass('hidden');
-
-    Fliplet.DataSources.getById(dataSourceId, {
-      cache: false
-    }).then(function (dataSource) {
-       var options = [
-        '<option value="none">-- Select a field</option>'
-      ];
-
-      dataSource.columns.forEach(function (column) {
-        options.push('<option value="' + column + '">' + column + '</option>');
-      });
-
-      $emailAddress.html(options.join(''));
-
-      if (data.dataSourceEmailColumn) {
-        $emailAddress.val(data.dataSourceEmailColumn);
-      }
-
-      $emailAddress.removeAttr('disabled');
-    });
-  }
-
-  function createDataSource() {
-    event.preventDefault();
-    var name = prompt('Please type a name for your data source:');
-
-    if (name === null) {
-      $('#manage-data').addClass('hidden');
-      $dataSources.val('none').trigger('change');
-      return;
-    }
-
-    if (name === '') {
-      $('#manage-data').addClass('hidden');
-      $dataSources.val('none').trigger('change');
-      alert('You must enter a data source name');
-      return;
-    }
-
-    Fliplet.DataSources.create({
-      name: name,
-      organizationId: Fliplet.Env.get('organizationId')
-    }).then(function(ds) {
-      allDataSources.push(ds);
-      $dataSources.append('<option value="' + ds.id + '">' + ds.name + '</option>');
-      $dataSources.val(ds.id).trigger('change');
-    });
-  }
-
-  function manageAppData(event) {
-    if (event) {
-      event.preventDefault();
-    }
-
-    var dataSourceId = $dataSources.val();
-
-    Fliplet.Studio.emit('overlay', {
-      name: 'widget',
-      options: {
-        size: 'large',
-        package: 'com.fliplet.data-sources',
-        title: 'Edit Data Sources',
-        classes: 'data-source-overlay',
-        data: {
-          context: 'overlay',
-          dataSourceId: dataSourceId
-        }
-      }
-    });
-  }
-
-  function reloadDataSources(dataSourceId) {
-    return Fliplet.DataSources.get({
-      roles: 'publisher,editor',
-      type: null
-    }, {
-      cache: false
-    }).then(function(results) {
-      allDataSources = results;
-      $dataSources.html('<option value="none">-- Select a data source</option><option disabled>------</option><option value="new">Create a new data source</option><option disabled>------</option>');
-      var options = [];
-
-      allDataSources.forEach(function (d) {
-        options.push('<option value="' + d.id + '">' + d.name + '</option>');
-      });
-
-      $dataSources.append(options.join(''));
-
-      if (dataSourceId) {
-        $dataSources.val(dataSourceId);
-      }
-      $dataSources.trigger('change');
-    });
-  }
 
   // Load the data source for the contacts
   Fliplet.DataSources.get({
@@ -204,10 +137,11 @@ Fliplet().then(function() {
     $dataSources.append(options.join(''));
 
     if (data.dataSourceId) {
-      $dataSources.val(data.dataSourceId);
+      // $dataSources.val(data.dataSourceId);
+      initDataSourceProvider(data.dataSourceId)
+      return;
     }
-    $dataSources.trigger('change');
 
-    $dataSources.prop('disabled', false);
+    initDataSourceProvider();
   });
 });
