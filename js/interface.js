@@ -48,7 +48,7 @@ Fliplet().then(function() {
       emailColumn: $dataColumnsEmail.val() !== 'none'
         ? $dataColumnsEmail.val()
         : undefined,
-      dynamicEntityId: data.dynamicEntityId,
+      dynamicEntityId: data.dynamicEntityId
     }).then(function() {
       Fliplet.Widget.complete();
     });
@@ -131,6 +131,7 @@ Fliplet().then(function() {
 
     if (data.dataSourceId) {
       initDataSourceProvider(data.dataSourceId);
+
       return;
     }
 
