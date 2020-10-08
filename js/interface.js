@@ -126,7 +126,6 @@ Fliplet().then(function() {
     $dataSources.append(options.join(''));
 
     if (data.dataSourceId) {
-      // $dataSources.val(data.dataSourceId);
       initDataSourceProvider(data.dataSourceId);
       return;
     }
