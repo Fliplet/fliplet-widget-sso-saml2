@@ -4,11 +4,6 @@ Fliplet().then(function() {
   var dataSourceProvider = null;
   var $dataColumnsEmail = $('#emailColumn');
 
-  var fields = [
-    'emailColumn',
-    'expireTimeout'
-  ];
-
   if (!$('[name="sso_login_url"]').val()) {
     data.dynamicEntityId = true;
   }
@@ -78,7 +73,7 @@ Fliplet().then(function() {
       },
       accessRules: []
     };
-  
+
     dataSourceProvider = Fliplet.Widget.open('com.fliplet.data-source-provider', {
       selector: '#dataSourceProvider',
       data: dataSourceData,
@@ -99,38 +94,32 @@ Fliplet().then(function() {
 
           if (data.emailColumn) {
             dataSource.columns.forEach(function(column) {
-              if(column === data.emailColumn) {
+              if (column === data.emailColumn) {
                 $dataColumnsEmail.val(data.emailColumn);
               }
-            })
+            });
           }
 
           $('#select-email-field').toggleClass('hidden', !dataSource.id);
         }
       }
     });
-  
+
     dataSourceProvider.then(function(dataSource) {
       data.dataSourceId = dataSource.data.id;
       $('form').submit();
     });
-  };
-
-  Fliplet.Studio.onMessage(function(event) {
-    if (event.data && event.data.event === 'overlay-close') {
-      reloadDataSources(event.data.data.dataSourceId);
-    }
-  });
+  }
 
   // Load the data source for the contacts
   Fliplet.DataSources.get({
     roles: 'publisher,editor',
     type: null
-  }).then(function (dataSources) {
+  }).then(function(dataSources) {
     allDataSources = dataSources;
     var options = [];
 
-    allDataSources.forEach(function (d) {
+    allDataSources.forEach(function(d) {
       options.push('<option value="' + d.id + '">' + d.name + '</option>');
     });
 
@@ -138,7 +127,7 @@ Fliplet().then(function() {
 
     if (data.dataSourceId) {
       // $dataSources.val(data.dataSourceId);
-      initDataSourceProvider(data.dataSourceId)
+      initDataSourceProvider(data.dataSourceId);
       return;
     }
 
