@@ -45,7 +45,7 @@ Fliplet().then(function() {
         allow_unencrypted_assertion: true // This can be optional for future integrations
       },
       dataSourceId: data.dataSourceId,
-      emailColumn: $dataColumnsEmail.val() !== 'none'
+      dataSourceEmailColumn: $dataColumnsEmail.val() !== 'none'
         ? $dataColumnsEmail.val()
         : undefined,
       dynamicEntityId: data.dynamicEntityId
@@ -104,10 +104,10 @@ Fliplet().then(function() {
       });
     }
 
-    if (data.emailColumn) {
+    if (data.dataSourceEmailColumn) {
       dataSource.columns.forEach(function(column) {
-        if (column === data.emailColumn) {
-          $dataColumnsEmail.val(data.emailColumn);
+        if (column === data.dataSourceEmailColumn) {
+          $dataColumnsEmail.val(data.dataSourceEmailColumn);
         }
       });
     }
