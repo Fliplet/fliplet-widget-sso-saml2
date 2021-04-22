@@ -38,8 +38,8 @@
   <hr />
   <div class="form-group">
     <div class="col-sm-4 control-label">
-      <label for="validateSession">Continuously verify session</label>
-      <p class="help-block"><small>Fliplet will attempt to validate the user's session against your Identity Provider every 30 minutes when this is enabled. The user will be logged out automatically if the Identity Provider fails to authenticate the user.</small></p>
+      <label for="validateSession">Expire session automatically</label>
+      <p class="help-block"><small>Fliplet will attempt to validate the user's session against your Identity Provider's <code>SessionNotOnOrAfter</code> date every 3 hours when this is enabled. The user will be logged out automatically if the date provided by the Identity Provider has expired.</small></p>
     </div>
     <div class="col-sm-8">
       <input type="checkbox" id="validateSession" name="validateSession" /> Enable session verification. If you're unsure, leave this checked.
