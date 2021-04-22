@@ -4,8 +4,10 @@ Fliplet().then(function() {
   var dataSourceProvider = null;
   var $dataColumnsEmail = $('#emailColumn');
 
+  // Apply defaults for new instances
   if (!$('[name="sso_login_url"]').val()) {
     data.dynamicEntityId = true;
+    data.validateSession = true;
   }
 
   $(window).on('resize', Fliplet.Widget.autosize);
@@ -24,6 +26,10 @@ Fliplet().then(function() {
     ? metadataUrl
     : 'App ID invalid'
   );
+
+  if (data.validateSession) {
+    $('[name="validateSession"]').prop('checked', true);
+  }
 
   var clipboard = new Clipboard('#entity_id');
   clipboard.on('success', function(e) {
@@ -44,6 +50,7 @@ Fliplet().then(function() {
         certificates: $('[name="certificates"]').val(),
         allow_unencrypted_assertion: true // This can be optional for future integrations
       },
+      validateSession: !!$('[name="validateSession"]').val(),
       dataSourceId: data.dataSourceId,
       dataSourceEmailColumn: $dataColumnsEmail.val() !== 'none'
         ? $dataColumnsEmail.val()
