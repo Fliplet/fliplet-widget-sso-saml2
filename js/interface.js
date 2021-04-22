@@ -50,7 +50,7 @@ Fliplet().then(function() {
         certificates: $('[name="certificates"]').val(),
         allow_unencrypted_assertion: true // This can be optional for future integrations
       },
-      validateSession: !!$('[name="validateSession"]').val(),
+      validateSession: !!$('[name="validateSession"]').prop('checked'),
       dataSourceId: data.dataSourceId,
       dataSourceEmailColumn: $dataColumnsEmail.val() !== 'none'
         ? $dataColumnsEmail.val()
