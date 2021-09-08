@@ -14,22 +14,26 @@ Fliplet.Widget.register('com.fliplet.sso.saml2', function registerComponent() {
         opts.basicAuth = true;
       }
 
-      return new Promise(function(resolve, reject) {
-        Fliplet.Navigate.to({
-          action: 'url',
-          inAppBrowser: inAppBrowser,
-          basicAuth: opts.basicAuth,
-          handleAuthorization: false,
-          url: (Fliplet.Env.get('primaryApiUrl') || Fliplet.Env.get('apiUrl')) + 'v1/session/authorize/saml2?appId=' + Fliplet.Env.get('masterAppId') + '&auth_token=' + Fliplet.User.getAuthToken(),
-          onclose: function() {
-            Fliplet.Session.get().then(function(session) {
-              if (session.server.passports.saml2) {
-                return resolve();
-              }
+      // Ensure a session is created so that the token being used by the system browser (or IAB) is the same
+      // as the resulting session which could have been generated if this went out with an app token instead.
+      return Fliplet.Session.get().then(function() {
+        return new Promise(function(resolve, reject) {
+          Fliplet.Navigate.to({
+            action: 'url',
+            inAppBrowser: inAppBrowser,
+            basicAuth: opts.basicAuth,
+            handleAuthorization: false,
+            url: (Fliplet.Env.get('primaryApiUrl') || Fliplet.Env.get('apiUrl')) + 'v1/session/authorize/saml2?appId=' + Fliplet.Env.get('masterAppId') + '&auth_token=' + Fliplet.User.getAuthToken(),
+            onclose: function() {
+              Fliplet.Session.get().then(function(session) {
+                if (session.server.passports.saml2) {
+                  return resolve();
+                }
 
-              reject('You didn\'t finish the login process.');
-            });
-          }
+                reject('You didn\'t finish the login process.');
+              });
+            }
+          });
         });
       });
     }
