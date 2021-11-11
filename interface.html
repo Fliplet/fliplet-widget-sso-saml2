@@ -36,13 +36,26 @@
     </div>
   </div>
   <hr />
-  <div class="form-group">
+
+  <!-- Session expiration is disabled until https://github.com/Fliplet/fliplet-api/pull/4668 is resolved -->
+  <div class="form-group hidden">
     <div class="col-sm-4 control-label">
       <label for="validateSession">Expire session automatically</label>
       <p class="help-block"><small>Fliplet will attempt to validate the user's session against your Identity Provider's <code>SessionNotOnOrAfter</code> date every 3 hours when this is enabled. The user will be logged out automatically if the date provided by the Identity Provider has expired.</small></p>
     </div>
     <div class="col-sm-8">
       <input type="checkbox" id="validateSession" name="validateSession" /> Enable session expiration. If you're unsure, leave this checked.
+    </div>
+  </div>
+  <!-- end of disabled section-->
+
+  <div class="form-group">
+    <div class="col-sm-4 control-label">
+      <label for="forceAuthentication">Force authentication</label>
+      <p class="help-block"><small>When enabled, your Identity Provider will require the user to authenticate even if they have previously logged in on the same device and browser.</small></p>
+    </div>
+    <div class="col-sm-8">
+      <input type="checkbox" id="forceAuthentication" name="forceAuthentication" /> User must authenticate with the Identity Provider every time they log in.
     </div>
   </div>
 

@@ -31,6 +31,10 @@ Fliplet().then(function() {
     $('[name="validateSession"]').prop('checked', true);
   }
 
+  if (data.sp && data.sp.force_authn) {
+    $('[name="forceAuthentication"]').prop('checked', true);
+  }
+
   var clipboard = new Clipboard('#entity_id');
   clipboard.on('success', function(e) {
     $('#entity_id').html('Copied to clipboard <i class="fa fa-check"></i>');
@@ -49,6 +53,9 @@ Fliplet().then(function() {
         sso_logout_url: $('[name="sso_logout_url"]').val(),
         certificates: $('[name="certificates"]').val(),
         allow_unencrypted_assertion: true // This can be optional for future integrations
+      },
+      sp: {
+        force_authn: !!$('[name="forceAuthentication"]').prop('checked')
       },
       validateSession: !!$('[name="validateSession"]').prop('checked'),
       dataSourceId: data.dataSourceId,
