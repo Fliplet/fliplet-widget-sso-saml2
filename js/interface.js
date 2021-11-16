@@ -31,9 +31,8 @@ Fliplet().then(function() {
     $('[name="validateSession"]').prop('checked', true);
   }
 
-  if (data.sp && data.sp.force_authn) {
-    $('[name="forceAuthentication"]').prop('checked', true);
-  }
+  // Defaults to checked
+  $('[name="forceAuthentication"]').prop('checked', data.sp && data.sp.force_authn === false ? false : true);
 
   var clipboard = new Clipboard('#entity_id');
   clipboard.on('success', function(e) {
