@@ -1,0 +1,9 @@
+{
+  "widgets": {
+    "saml2": {
+      "errors": {
+        "loginNotComplete": "You didn't finish the login process."
+      }
+    }
+  }
+}
