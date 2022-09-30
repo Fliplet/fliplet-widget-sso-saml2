@@ -3,6 +3,7 @@ Fliplet().then(function() {
   var appId = Fliplet.Env.get('appId');
   var dataSourceProvider = null;
   var $dataColumnsEmail = $('#emailColumn');
+  const timeInMinutes = 60;
 
   // Apply defaults for new instances
   if (!$('[name="sso_login_url"]').val()) {
@@ -61,7 +62,9 @@ Fliplet().then(function() {
       dataSourceEmailColumn: $dataColumnsEmail.val() !== 'none'
         ? $dataColumnsEmail.val()
         : undefined,
-      dynamicEntityId: data.dynamicEntityId
+      dynamicEntityId: data.dynamicEntityId,
+      sessionMaxDurationMinutes: $('[name="loggedInUserTime"]').val() * timeInMinutes, // convert hours into minutes
+      sessionIdleTimeoutMinutes: $('[name="loggedOutUserTime"]').val()
     }).then(function() {
       Fliplet.Widget.complete();
     });
@@ -150,4 +153,8 @@ Fliplet().then(function() {
 
     initDataSourceProvider();
   });
+
+  $('[data-toggle="tooltip"]').tooltip();
+
 });
+
