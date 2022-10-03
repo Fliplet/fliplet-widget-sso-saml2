@@ -69,7 +69,7 @@
     </div>
     <div class="col-sm-8">
       <div class="input-group">
-        <input type="number" class="form-control logged-user" name="loggedInUserTime" min="0" oninput="validity.valid||(value='');" value="{{loggedInUserTime}}">
+        <input type="number" class="form-control logged-user" name="loggedInUserTime" min="0" oninput="validity.valid||(value='');" value="{{sessionMaxDurationMinutes}}">
         <span class="input-group-addon time-label">Hours</span>
       </div>
     </div>
@@ -83,7 +83,7 @@
     </div>
     <div class="col-sm-8">
       <div class="input-group">
-        <input type="number" class="form-control logged-user" name="loggedOutUserTime" min="0" oninput="validity.valid||(value='');" value="{{loggedOutUserTime}}">
+        <input type="number" class="form-control logged-user" name="loggedOutUserTime" min="0" oninput="validity.valid||(value='');" value="{{sessionIdleTimeoutMinutes}}">
         <span class="input-group-addon time-label">Minutes</span>
       </div>
     </div>

@@ -3,6 +3,7 @@ Fliplet().then(function() {
   var appId = Fliplet.Env.get('appId');
   var dataSourceProvider = null;
   var $dataColumnsEmail = $('#emailColumn');
+  var sessionMaxDurationMinutes;
   const timeInMinutes = 60;
 
   // Apply defaults for new instances
@@ -30,6 +31,10 @@ Fliplet().then(function() {
 
   if (data.validateSession) {
     $('[name="validateSession"]').prop('checked', true);
+  }
+
+  if (data.sessionMaxDurationMinutes) {
+    sessionMaxDurationMinutes = $('[name="loggedInUserTime"]').val(data.sessionMaxDurationMinutes / timeInMinutes);
   }
 
   // Defaults to checked
