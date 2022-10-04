@@ -162,4 +162,3 @@ Fliplet().then(function() {
   $('[data-toggle="tooltip"]').tooltip();
 
 });
-
