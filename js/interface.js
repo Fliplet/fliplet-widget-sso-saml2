@@ -3,6 +3,7 @@ Fliplet().then(function() {
   var appId = Fliplet.Env.get('appId');
   var dataSourceProvider = null;
   var $dataColumnsEmail = $('#emailColumn');
+  var $loggedInUserTime =  $('[name="loggedInUserTime"]');
   var timeInMinutes = 60;
 
   // Apply defaults for new instances
@@ -33,7 +34,7 @@ Fliplet().then(function() {
   }
 
   if (data.sessionMaxDurationMinutes) {
-    data.sessionMaxDurationMinutes = $('[name="loggedInUserTime"]').val(data.sessionMaxDurationMinutes / timeInMinutes);
+    data.sessionMaxDurationMinutes = $loggedInUserTime.val(data.sessionMaxDurationMinutes / timeInMinutes);
   }
 
   // Defaults to checked
@@ -68,7 +69,7 @@ Fliplet().then(function() {
         ? $dataColumnsEmail.val()
         : undefined,
       dynamicEntityId: data.dynamicEntityId,
-      sessionMaxDurationMinutes: $('[name="loggedInUserTime"]').val() * timeInMinutes, // convert hours into minutes
+      sessionMaxDurationMinutes: $loggedInUserTime.val() !== '' ? $loggedInUserTime.val() * timeInMinutes : '', // convert hours into minutes
       sessionIdleTimeoutMinutes: $('[name="loggedOutUserTime"]').val()
     }).then(function() {
       Fliplet.Widget.complete();
