@@ -3,7 +3,7 @@ Fliplet().then(function() {
   var appId = Fliplet.Env.get('appId');
   var dataSourceProvider = null;
   var $dataColumnsEmail = $('#emailColumn');
-  var $loggedInUserTime =  $('[name="loggedInUserTime"]');
+  var $loggedInUserTime = $('[name="loggedInUserTime"]');
   var timeInMinutes = 60;
 
   // Apply defaults for new instances
