@@ -1,0 +1,18 @@
+{
+  "extends": ["eslint:recommended", "fliplet"],
+  "globals": {
+    "CodeMirror": "readonly",
+    "Raven": "readonly",
+    "spreadsheet": "readonly",
+    "jsdoc": "readonly",
+    "hot": "readonly",
+    "Handsontable": "readonly",
+    "Papa": "readonly",
+    "currentDataSourceId": true,
+    "table": true,
+    "searchField": true,
+    "$sourceContents": true,
+    "$initialSpinnerLoading": true,
+    "currentDataSourceDefinition": true
+  }
+}
