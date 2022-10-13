@@ -7,6 +7,27 @@
   width: 100%;
 }
 
-.widget-holder>h3 {
+.widget-holder > h3 {
   margin-top: 0;
+}
+
+.time-label {
+  border-left: none;
+  background-color: #f8f6f7;
+}
+
+.logged-user {
+  border-right: none;
+}
+
+.logged-user:focus {
+  border-right: 1px solid;
+  border-color: #00abd1;
+}
+
+.help-icon {
+  font-size: 16px;
+  margin-left: 4px;
+  color: #333;
+  opacity: 0.5;
 }

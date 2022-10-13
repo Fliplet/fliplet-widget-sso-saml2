@@ -3,6 +3,8 @@ Fliplet().then(function() {
   var appId = Fliplet.Env.get('appId');
   var dataSourceProvider = null;
   var $dataColumnsEmail = $('#emailColumn');
+  var $loggedInUserTime = $('[name="loggedInUserTime"]');
+  var minutesInHour = 60;
 
   // Apply defaults for new instances
   if (!$('[name="sso_login_url"]').val()) {
@@ -31,10 +33,15 @@ Fliplet().then(function() {
     $('[name="validateSession"]').prop('checked', true);
   }
 
+  if (data.sessionMaxDurationMinutes) {
+    data.sessionMaxDurationMinutes = $loggedInUserTime.val(data.sessionMaxDurationMinutes / minutesInHour);
+  }
+
   // Defaults to checked
   $('[name="forceAuthentication"]').prop('checked', data.sp && data.sp.force_authn === false ? false : true);
 
   var clipboard = new Clipboard('#entity_id');
+
   clipboard.on('success', function(e) {
     $('#entity_id').html('Copied to clipboard <i class="fa fa-check"></i>');
     e.clearSelection();
@@ -61,7 +68,9 @@ Fliplet().then(function() {
       dataSourceEmailColumn: $dataColumnsEmail.val() !== 'none'
         ? $dataColumnsEmail.val()
         : undefined,
-      dynamicEntityId: data.dynamicEntityId
+      dynamicEntityId: data.dynamicEntityId,
+      sessionMaxDurationMinutes: $loggedInUserTime.val() !== '' ? $loggedInUserTime.val() * minutesInHour : '', // convert hours into minutes
+      sessionIdleTimeoutMinutes: $('[name="loggedOutUserTime"]').val()
     }).then(function() {
       Fliplet.Widget.complete();
     });
@@ -134,6 +143,7 @@ Fliplet().then(function() {
     type: null
   }).then(function(dataSources) {
     allDataSources = dataSources;
+
     var options = [];
 
     allDataSources.forEach(function(d) {
@@ -150,4 +160,6 @@ Fliplet().then(function() {
 
     initDataSourceProvider();
   });
+
+  $('[data-toggle="tooltip"]').tooltip();
 });
