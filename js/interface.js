@@ -5,6 +5,7 @@ Fliplet().then(function() {
   var $dataColumnsEmail = $('#emailColumn');
   var $loggedInUserTime = $('[name="loggedInUserTime"]');
   var minutesInHour = 60;
+  var currentDataSource;
 
   // Apply defaults for new instances
   if (!$('[name="sso_login_url"]').val()) {
@@ -53,24 +54,44 @@ Fliplet().then(function() {
 
   $('form').submit(function(event) {
     event.preventDefault();
-    Fliplet.Widget.save({
-      idp: {
-        sso_login_url: $('[name="sso_login_url"]').val(),
-        sso_logout_url: $('[name="sso_logout_url"]').val(),
-        certificates: $('[name="certificates"]').val(),
-        allow_unencrypted_assertion: true // This can be optional for future integrations
-      },
-      sp: {
-        force_authn: !!$('[name="forceAuthentication"]').prop('checked')
-      },
-      validateSession: !!$('[name="validateSession"]').prop('checked'),
-      dataSourceId: data.dataSourceId,
-      dataSourceEmailColumn: $dataColumnsEmail.val() !== 'none'
-        ? $dataColumnsEmail.val()
-        : undefined,
-      dynamicEntityId: data.dynamicEntityId,
-      sessionMaxDurationMinutes: $loggedInUserTime.val() !== '' ? $loggedInUserTime.val() * minutesInHour : '', // convert hours into minutes
-      sessionIdleTimeoutMinutes: $('[name="loggedOutUserTime"]').val()
+
+    var updateDataSource = Promise.resolve();
+
+    if (currentDataSource) {
+      var definition = currentDataSource.definition || {};
+
+      // convert hours into minutes
+      definition.sessionMaxDurationMinutes = $loggedInUserTime.val() !== ''
+        ? $loggedInUserTime.val() * minutesInHour
+        : '';
+      definition.sessionIdleTimeoutMinutes = $('[name="loggedOutUserTime"]').val();
+
+      // Update data source definitions
+      var options = { id: data.dataSourceId, definition: definition };
+
+      updateDataSource = Fliplet.DataSources.update(options);
+    }
+
+    return updateDataSource.then(function() {
+      return Fliplet.Widget.save({
+        idp: {
+          sso_login_url: $('[name="sso_login_url"]').val(),
+          sso_logout_url: $('[name="sso_logout_url"]').val(),
+          certificates: $('[name="certificates"]').val(),
+          allow_unencrypted_assertion: true // This can be optional for future integrations
+        },
+        sp: {
+          force_authn: !!$('[name="forceAuthentication"]').prop('checked')
+        },
+        validateSession: !!$('[name="validateSession"]').prop('checked'),
+        dataSourceId: data.dataSourceId,
+        dataSourceEmailColumn: $dataColumnsEmail.val() !== 'none'
+          ? $dataColumnsEmail.val()
+          : undefined,
+        dynamicEntityId: data.dynamicEntityId,
+        sessionMaxDurationMinutes: $loggedInUserTime.val() !== '' ? $loggedInUserTime.val() * minutesInHour : '', // convert hours into minutes
+        sessionIdleTimeoutMinutes: $('[name="loggedOutUserTime"]').val()
+      });
     }).then(function() {
       Fliplet.Widget.complete();
     });
@@ -103,6 +124,8 @@ Fliplet().then(function() {
         if (event === 'dataSourceSelect') {
           onDataSourceSelect(dataSource);
         }
+
+        currentDataSource = dataSource.id ? dataSource : null;
       }
     });
 
