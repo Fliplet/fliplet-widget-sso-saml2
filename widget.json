@@ -7,7 +7,9 @@
   "provider_only": false,
   "references": [],
   "html_tag": "div",
-  "excludedProperties": ["idp.certificates"],
+  "settings": {
+    "excludedProperties": ["idp.certificates"]
+  },
   "interface": {
     "dependencies": [
       "fliplet-core",
