@@ -8,8 +8,7 @@
   "references": [],
   "html_tag": "div",
   "settings": {
-    "excludedProperties": ["idp.certificates"],
-    "protected": ["idp.certificates"]
+    "excludedProperties": ["idp.certificates"]
   },
   "interface": {
     "dependencies": [
