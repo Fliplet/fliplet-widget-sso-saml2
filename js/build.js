@@ -26,16 +26,22 @@ Fliplet.Widget.register('com.fliplet.sso.saml2', function registerComponent() {
             url: (Fliplet.Env.get('primaryApiUrl') || Fliplet.Env.get('apiUrl')) + 'v1/session/authorize/saml2?appId=' + Fliplet.Env.get('masterAppId') + '&auth_token=' + Fliplet.User.getAuthToken(),
             onclose: function() {
               Fliplet.Session.get().then(function(session) {
-                if (session.server.passports.saml2 && session.server.passports.saml2.length) {
-                  return resolve();
-                }
-
-                reject(T('widgets.saml2.errors.loginNotComplete'));
+                return Promise.all([
+                  Fliplet.App.Storage.set('fl-chat-auth-email', session.user.email),
+                  Fliplet.App.Storage.set('fl-chat-user-token', session.auth_token)
+                ]).then(function() {
+                  if (session.server.passports.saml2 && session.server.passports.saml2.length) {
+                    return resolve();
+                  }
+                })
+                  .catch(function() {
+                    reject(T('widgets.saml2.errors.loginNotComplete'));
+                  });
               });
             }
           });
         });
       });
     }
-  }
+  };
 });
