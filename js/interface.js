@@ -125,7 +125,13 @@ Fliplet().then(function() {
           onDataSourceSelect(dataSource);
         }
 
-        currentDataSource = dataSource.id ? dataSource : null;
+        // Only assign selected DS when current DS in not available or not as same as selected DS
+        if (!currentDataSource
+          || (dataSource && dataSource.id && dataSource.id !== currentDataSource.id)
+          || (dataSource.data && dataSource.data.id && dataSource.data.id !== currentDataSource.id)) {
+          currentDataSource = dataSource.id ? dataSource : null;
+          currentDataSource = currentDataSource || dataSource.data;
+        }
       }
     });
 
