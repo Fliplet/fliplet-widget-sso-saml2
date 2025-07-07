@@ -57,6 +57,7 @@ Fliplet().then(function() {
 
     var updateDataSource = Promise.resolve();
 
+    // Only update data source if ID is present
     if (currentDataSource && data && data.dataSourceId) {
       var definition = currentDataSource.definition || {};
 
