@@ -57,7 +57,7 @@ Fliplet().then(function() {
 
     var updateDataSource = Promise.resolve();
 
-    if (currentDataSource) {
+    if (currentDataSource && data && data.dataSourceId) {
       var definition = currentDataSource.definition || {};
 
       // convert hours into minutes
