@@ -4,6 +4,7 @@ Fliplet().then(function() {
   var dataSourceProvider = null;
   var $dataColumnsEmail = $('#emailColumn');
   var $loggedInUserTime = $('[name="loggedInUserTime"]');
+  var $loggedOutUserTime = $('[name="loggedOutUserTime"]');
   var minutesInHour = 60;
   var currentDataSource;
 
@@ -65,7 +66,7 @@ Fliplet().then(function() {
       definition.sessionMaxDurationMinutes = $loggedInUserTime.val() !== ''
         ? $loggedInUserTime.val() * minutesInHour
         : '';
-      definition.sessionIdleTimeoutMinutes = $('[name="loggedOutUserTime"]').val();
+      definition.sessionIdleTimeoutMinutes = $loggedOutUserTime.val();
 
       // Update data source definitions
       var options = { id: data.dataSourceId, definition: definition };
@@ -122,6 +123,17 @@ Fliplet().then(function() {
       selector: '#dataSourceProvider',
       data: dataSourceData,
       onEvent: function(event, dataSource) {
+        // Fetch fresh session timeout values from datasource definition
+        if (dataSource && dataSource.definition) {
+          if (typeof dataSource.definition.sessionMaxDurationMinutes !== 'undefined' && dataSource.definition.sessionMaxDurationMinutes) {
+            $loggedInUserTime.val(dataSource.definition.sessionMaxDurationMinutes / minutesInHour);
+          }
+
+          if (typeof dataSource.definition.sessionIdleTimeoutMinutes !== 'undefined' && dataSource.definition.sessionIdleTimeoutMinutes) {
+            $loggedOutUserTime.val(dataSource.definition.sessionIdleTimeoutMinutes);
+          }
+        }
+
         if (event === 'dataSourceSelect') {
           onDataSourceSelect(dataSource);
         }
@@ -183,7 +195,25 @@ Fliplet().then(function() {
     $dataSources.append(options.join(''));
 
     if (data.dataSourceId) {
-      initDataSourceProvider(data.dataSourceId);
+      // Fetch the datasource to get fresh definition values on initialization
+      Fliplet.DataSources.getById(data.dataSourceId).then(function(dataSource) {
+        currentDataSource = dataSource;
+
+        // Populate form fields with fresh values from datasource definition
+        if (dataSource && dataSource.definition) {
+          if (typeof dataSource.definition.sessionMaxDurationMinutes !== 'undefined' && dataSource.definition.sessionMaxDurationMinutes) {
+            $loggedInUserTime.val(dataSource.definition.sessionMaxDurationMinutes / minutesInHour);
+          }
+
+          if (typeof dataSource.definition.sessionIdleTimeoutMinutes !== 'undefined' && dataSource.definition.sessionIdleTimeoutMinutes) {
+            $loggedOutUserTime.val(dataSource.definition.sessionIdleTimeoutMinutes);
+          }
+        }
+      }).catch(function() {
+        // If datasource fetch fails, continue with initialization
+      }).finally(function() {
+        initDataSourceProvider(data.dataSourceId);
+      });
 
       return;
     }
