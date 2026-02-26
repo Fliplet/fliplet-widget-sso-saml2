@@ -17,13 +17,21 @@ Fliplet.Widget.register('com.fliplet.sso.saml2', function registerComponent() {
       // Ensure a session is created so that the token being used by the system browser (or IAB) is the same
       // as the resulting session which could have been generated if this went out with an app token instead.
       return Fliplet.Session.get().then(function() {
+        // Exchange the real session token for a one-time state token so that
+        // auth_token never appears in the URL opened in the in-app browser.
+        return Fliplet.API.request({
+          url: 'v1/session/authorize/state',
+          method: 'POST',
+          data: { appId: Fliplet.Env.get('masterAppId'), sso: true }
+        });
+      }).then(function(response) {
         return new Promise(function(resolve, reject) {
           Fliplet.Navigate.to({
             action: 'url',
             inAppBrowser: inAppBrowser,
             basicAuth: opts.basicAuth,
             handleAuthorization: false,
-            url: (Fliplet.Env.get('primaryApiUrl') || Fliplet.Env.get('apiUrl')) + 'v1/session/authorize/saml2?appId=' + Fliplet.Env.get('masterAppId') + '&auth_token=' + Fliplet.User.getAuthToken(),
+            url: (Fliplet.Env.get('primaryApiUrl') || Fliplet.Env.get('apiUrl')) + 'v1/session/authorize/saml2?appId=' + Fliplet.Env.get('masterAppId') + '&state=' + response.state,
             onclose: function() {
               Fliplet.Session.get().then(function(session) {
                 return Promise.all([
