@@ -51,7 +51,8 @@ Fliplet.Widget.register('com.fliplet.sso.saml2', function registerComponent() {
                     return resolve();
                   }
 
-                  console.warn(logPrefix, 'session has no saml2 passport, passports:', Object.keys(session.server.passports || {}));
+                  console.warn(logPrefix, 'session has no saml2 passport, passports:', Object.keys((session.server && session.server.passports) || {}));
+                  reject(T('widgets.saml2.errors.loginNotComplete'));
                 })
                   .catch(function(err) {
                     console.error(logPrefix, 'onclose session check failed:', err);
