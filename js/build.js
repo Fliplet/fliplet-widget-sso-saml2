@@ -38,7 +38,7 @@ Fliplet.Widget.register('com.fliplet.sso.saml2', function registerComponent() {
           : '&auth_token=' + Fliplet.User.getAuthToken();
 
         return new Promise(function(resolve, reject) {
-          var authUrl = (Fliplet.Env.get('primaryApiUrl') || Fliplet.Env.get('apiUrl')) + 'v1/session/authorize/saml2?appId=' + appId + '&auth_token=' + Fliplet.User.getAuthToken();
+          var authUrl = Fliplet.Env.get('apiUrl') + 'v1/session/authorize/saml2?appId=' + appId + '&auth_token=' + Fliplet.User.getAuthToken();
 
           console.log(logPrefix, 'navigating to auth URL:', authUrl.replace(/auth_token=[^&]+/, 'auth_token=REDACTED'));
 
@@ -47,7 +47,7 @@ Fliplet.Widget.register('com.fliplet.sso.saml2', function registerComponent() {
             inAppBrowser: inAppBrowser,
             basicAuth: opts.basicAuth,
             handleAuthorization: false,
-            url: (Fliplet.Env.get('primaryApiUrl') || Fliplet.Env.get('apiUrl')) + 'v1/session/authorize/saml2?appId=' + Fliplet.Env.get('masterAppId') + authParam,
+            url: Fliplet.Env.get('apiUrl') + 'v1/session/authorize/saml2?appId=' + Fliplet.Env.get('masterAppId') + authParam,
             onclose: function() {
               console.log(logPrefix, 'onclose fired, fetching session...');
 
