@@ -8,12 +8,29 @@ Fliplet.Widget.register('com.fliplet.sso.saml2', function registerComponent() {
 
       var inAppBrowser = true;
 
-      // Use Safari on iOS12 to prevent issues with cookies not being saved.
+      // DEV-1114 / PS-1748: Use system Safari for SSO on all iOS versions to
+      // bypass the Cordova in-app browser cookie isolation. CDVWKInAppBrowser
+      // creates a new WKProcessPool on every open (CDVWKInAppBrowser.m:149)
+      // which flushes cookies between launches, so SSO sessions never persist
+      // and users are prompted to re-authenticate every app launch (Paul Weiss
+      // symptom). System Safari has its own persistent cookie store, so SSO
+      // sessions survive app launches.
+      //
+      // Originally (commit 4682f4e, Mar 2020) this workaround was scoped to
+      // iOS 12 to address an Apple SameSite cookie bug specific to that
+      // version. Apple fixed the SameSite bug in iOS 13, but the IAB cookie
+      // flush is a separate issue that affects all iOS versions — generalising
+      // the workaround to all iOS covers both.
+      //
       // ref: https://www.chromium.org/updates/same-site/incompatible-clients
-      if (Modernizr.ios && Fliplet.Navigator.device().version.toString().indexOf('12') === 0) {
+      // The proper architectural fix (ASWebAuthenticationSession) is tracked
+      // separately under DEV-1115.
+      if (Modernizr.ios) {
         inAppBrowser = false;
 
-        // Allow pause/resume events to be registered
+        // Allow pause/resume events to be registered (the existing iOS 12
+        // path used this to detect SSO completion when the in-app browser
+        // is bypassed — same mechanism applies on iOS 13+).
         opts.basicAuth = true;
       }
 
