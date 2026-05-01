@@ -1,7 +1,7 @@
 {
   "name": "SAML2 SSO",
   "package": "com.fliplet.sso.saml2",
-  "version": "1.0.0",
+  "version": "1.0.7",
   "icon": "img/icon.png",
   "tags": ["type:appComponent", "visibility:hidden"],
   "provider_only": false,
