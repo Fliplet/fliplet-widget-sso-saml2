@@ -1,7 +1,7 @@
 {
   "name": "SAML2 SSO",
   "package": "com.fliplet.sso.saml2",
-  "version": "1.0.7",
+  "version": "1.0.0",
   "icon": "img/icon.png",
   "tags": ["type:appComponent", "visibility:hidden"],
   "provider_only": false,
@@ -12,25 +12,11 @@
     "protected": ["idp.certificates"]
   },
   "interface": {
-    "dependencies": [
-      "fliplet-core",
-      "fliplet-studio-ui",
-      "fliplet-datasources",
-      "bootstrap"
-    ],
-    "assets": [
-      "js/interface.js",
-      "vendor/clipboard.min.js",
-      "css/interface.css"
-    ]
+    "dependencies": ["fliplet-core", "fliplet-studio-ui", "fliplet-datasources", "bootstrap"],
+    "assets": ["js/interface.js", "vendor/clipboard.min.js", "css/interface.css"]
   },
   "build": {
-    "dependencies": [
-      "fliplet-core",
-      "fliplet-session"
-    ],
-    "assets": [
-      "js/build.js"
-    ]
+    "dependencies": ["fliplet-core", "fliplet-session"],
+    "assets": ["js/build.js"]
   }
 }
