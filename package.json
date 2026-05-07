@@ -1,6 +1,6 @@
 {
   "name": "widget-sso-saml2",
-  "version": "1.0.0",
+  "version": "1.0.7",
   "description": "Documentation is available at https://developers.fliplet.com/API/integrations/sso-saml2.html",
   "main": "index.js",
   "scripts": {
