@@ -12,25 +12,11 @@
     "protected": ["idp.certificates"]
   },
   "interface": {
-    "dependencies": [
-      "fliplet-core",
-      "fliplet-studio-ui",
-      "fliplet-datasources",
-      "bootstrap"
-    ],
-    "assets": [
-      "js/interface.js",
-      "vendor/clipboard.min.js",
-      "css/interface.css"
-    ]
+    "dependencies": ["fliplet-core", "fliplet-studio-ui", "fliplet-datasources", "bootstrap"],
+    "assets": ["js/interface.js", "vendor/clipboard.min.js", "css/interface.css"]
   },
   "build": {
-    "dependencies": [
-      "fliplet-core",
-      "fliplet-session"
-    ],
-    "assets": [
-      "js/build.js"
-    ]
+    "dependencies": ["fliplet-core", "fliplet-session"],
+    "assets": ["js/build.js"]
   }
 }
