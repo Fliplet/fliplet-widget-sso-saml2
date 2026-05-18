@@ -39,8 +39,8 @@ Fliplet().then(function() {
     data.sessionMaxDurationMinutes = $loggedInUserTime.val(data.sessionMaxDurationMinutes / minutesInHour);
   }
 
-  // Defaults to checked
-  $('[name="forceAuthentication"]').prop('checked', data.sp && data.sp.force_authn === false ? false : true);
+  // Defaults to unchecked — only enable when explicitly saved as true
+  $('[name="forceAuthentication"]').prop('checked', !!(data.sp && data.sp.force_authn === true));
 
   var clipboard = new Clipboard('#entity_id');
 
@@ -222,4 +222,29 @@ Fliplet().then(function() {
   });
 
   $('[data-toggle="tooltip"]').tooltip();
+
+  // Auto-expand advanced panel if any non-default value is already saved
+  var hasAdvancedConfig = !!(
+    (data.sp && data.sp.force_authn === true)
+    || data.sessionMaxDurationMinutes
+    || data.sessionIdleTimeoutMinutes
+    || data.dataSourceId
+  );
+
+  if (hasAdvancedConfig) {
+    $('#advancedSettings').addClass('in').attr('aria-expanded', 'true');
+    $('[href="#advancedSettings"]').attr('aria-expanded', 'true').addClass('expanded');
+  }
+
+  $('#advancedSettings').on('shown.bs.collapse hidden.bs.collapse', function() {
+    Fliplet.Widget.autosize();
+  });
+
+  $('#advancedSettings').on('show.bs.collapse', function() {
+    $('[href="#advancedSettings"]').addClass('expanded').attr('aria-expanded', 'true');
+  });
+
+  $('#advancedSettings').on('hide.bs.collapse', function() {
+    $('[href="#advancedSettings"]').removeClass('expanded').attr('aria-expanded', 'false');
+  });
 });
