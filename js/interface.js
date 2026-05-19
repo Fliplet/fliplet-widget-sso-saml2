@@ -39,8 +39,10 @@ Fliplet().then(function() {
     data.sessionMaxDurationMinutes = $loggedInUserTime.val(data.sessionMaxDurationMinutes / minutesInHour);
   }
 
-  // Defaults to unchecked — only enable when explicitly saved as true
-  $('[name="forceAuthentication"]').prop('checked', !!(data.sp && data.sp.force_authn === true));
+  // Defaults to checked — preserves runtime behavior for existing apps that
+  // never explicitly saved force_authn. Only flips to unchecked when an
+  // admin has explicitly saved force_authn: false.
+  $('[name="forceAuthentication"]').prop('checked', data.sp && data.sp.force_authn === false ? false : true);
 
   var clipboard = new Clipboard('#entity_id');
 
@@ -223,9 +225,10 @@ Fliplet().then(function() {
 
   $('[data-toggle="tooltip"]').tooltip();
 
-  // Auto-expand advanced panel if any non-default value is already saved
+  // Auto-expand advanced panel if any non-default value is already saved.
+  // force_authn defaults to checked, so the non-default value here is `false`.
   var hasAdvancedConfig = !!(
-    (data.sp && data.sp.force_authn === true)
+    (data.sp && data.sp.force_authn === false)
     || data.sessionMaxDurationMinutes
     || data.sessionIdleTimeoutMinutes
     || data.dataSourceId
