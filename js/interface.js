@@ -39,10 +39,19 @@ Fliplet().then(function() {
     data.sessionMaxDurationMinutes = $loggedInUserTime.val(data.sessionMaxDurationMinutes / minutesInHour);
   }
 
-  // Defaults to checked — preserves runtime behavior for existing apps that
-  // never explicitly saved force_authn. Only flips to unchecked when an
-  // admin has explicitly saved force_authn: false.
-  $('[name="forceAuthentication"]').prop('checked', data.sp && data.sp.force_authn === false ? false : true);
+  // New instances default to unchecked per DEV-1208. For existing instances
+  // the checkbox stays checked unless force_authn was explicitly saved as
+  // false — this preserves runtime behavior because production's global
+  // saml2.force_authn default is true, so an undefined per-app value means
+  // force auth is currently ON. Flipping the default here for existing apps
+  // would silently relax auth on the next save (the saved force_authn: false
+  // would override the global default).
+  var isNewSsoInstance = !$('[name="sso_login_url"]').val();
+  $('[name="forceAuthentication"]').prop('checked',
+    isNewSsoInstance
+      ? false
+      : !(data.sp && data.sp.force_authn === false)
+  );
 
   var clipboard = new Clipboard('#entity_id');
 
