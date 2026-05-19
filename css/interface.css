@@ -35,3 +35,32 @@
 body {
   overflow-y: hidden;
 }
+
+.advanced-settings-toggle {
+  margin: 15px 0;
+}
+
+.advanced-settings-toggle a {
+  color: #00abd1;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.advanced-settings-toggle a:hover,
+.advanced-settings-toggle a:focus {
+  text-decoration: underline;
+}
+
+.advanced-settings-toggle .toggle-chevron {
+  transition: transform 0.2s ease-in-out;
+  margin-right: 4px;
+}
+
+.advanced-settings-toggle a.expanded .toggle-chevron {
+  transform: rotate(90deg);
+}
+
+.advanced-settings-panel {
+  margin-top: 10px;
+}

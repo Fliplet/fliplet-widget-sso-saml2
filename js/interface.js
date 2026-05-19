@@ -39,8 +39,19 @@ Fliplet().then(function() {
     data.sessionMaxDurationMinutes = $loggedInUserTime.val(data.sessionMaxDurationMinutes / minutesInHour);
   }
 
-  // Defaults to checked
-  $('[name="forceAuthentication"]').prop('checked', data.sp && data.sp.force_authn === false ? false : true);
+  // New instances default to unchecked per DEV-1208. For existing instances
+  // the checkbox stays checked unless force_authn was explicitly saved as
+  // false — this preserves runtime behavior because production's global
+  // saml2.force_authn default is true, so an undefined per-app value means
+  // force auth is currently ON. Flipping the default here for existing apps
+  // would silently relax auth on the next save (the saved force_authn: false
+  // would override the global default).
+  var isNewSsoInstance = !$('[name="sso_login_url"]').val();
+  $('[name="forceAuthentication"]').prop('checked',
+    isNewSsoInstance
+      ? false
+      : !(data.sp && data.sp.force_authn === false)
+  );
 
   var clipboard = new Clipboard('#entity_id');
 
@@ -222,4 +233,30 @@ Fliplet().then(function() {
   });
 
   $('[data-toggle="tooltip"]').tooltip();
+
+  // Auto-expand advanced panel if any non-default value is already saved.
+  // force_authn defaults to checked, so the non-default value here is `false`.
+  var hasAdvancedConfig = !!(
+    (data.sp && data.sp.force_authn === false)
+    || data.sessionMaxDurationMinutes
+    || data.sessionIdleTimeoutMinutes
+    || data.dataSourceId
+  );
+
+  if (hasAdvancedConfig) {
+    $('#advancedSettings').addClass('in').attr('aria-expanded', 'true');
+    $('[href="#advancedSettings"]').attr('aria-expanded', 'true').addClass('expanded');
+  }
+
+  $('#advancedSettings').on('shown.bs.collapse hidden.bs.collapse', function() {
+    Fliplet.Widget.autosize();
+  });
+
+  $('#advancedSettings').on('show.bs.collapse', function() {
+    $('[href="#advancedSettings"]').addClass('expanded').attr('aria-expanded', 'true');
+  });
+
+  $('#advancedSettings').on('hide.bs.collapse', function() {
+    $('[href="#advancedSettings"]').removeClass('expanded').attr('aria-expanded', 'false');
+  });
 });

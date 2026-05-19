@@ -5,7 +5,6 @@ Fliplet.Widget.register('com.fliplet.sso.saml2', function registerComponent() {
   return {
     authorize: function(opts) {
       opts = opts || {};
-
       var inAppBrowser = true;
 
       // Use Safari on iOS12 to prevent issues with cookies not being saved.
