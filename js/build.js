@@ -38,16 +38,24 @@ Fliplet.Widget.register('com.fliplet.sso.saml2', function registerComponent() {
           : '&auth_token=' + Fliplet.User.getAuthToken();
 
         return new Promise(function(resolve, reject) {
-          var authUrl = Fliplet.Env.get('apiUrl') + 'v1/session/authorize/saml2?appId=' + appId + '&auth_token=' + Fliplet.User.getAuthToken();
+          var authUrl = Fliplet.Env.get('apiUrl') + 'v1/session/authorize/saml2?appId=' + Fliplet.Env.get('masterAppId') + authParam;
 
-          console.log(logPrefix, 'navigating to auth URL:', authUrl.replace(/auth_token=[^&]+/, 'auth_token=REDACTED'));
+          // DEV-1231: log the URL we actually open, with whichever credential
+          // it carries redacted. This used to build a SECOND url — always the
+          // `&auth_token=` form, with a live session token — purely to log a
+          // redacted copy of it, while Navigate.to() opened the `authParam`
+          // one. So the line reported a token in the URL even on the state
+          // path, which is exactly the wrong answer when someone is reading
+          // these logs to work out why an SSO sign-in failed.
+          console.log(logPrefix, 'navigating to auth URL:',
+            authUrl.replace(/([?&](?:auth_token|state)=)[^&]+/g, '$1REDACTED'));
 
           Fliplet.Navigate.to({
             action: 'url',
             inAppBrowser: inAppBrowser,
             basicAuth: opts.basicAuth,
             handleAuthorization: false,
-            url: Fliplet.Env.get('apiUrl') + 'v1/session/authorize/saml2?appId=' + Fliplet.Env.get('masterAppId') + authParam,
+            url: authUrl,
             onclose: function() {
               console.log(logPrefix, 'onclose fired, fetching session...');
 
