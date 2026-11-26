@@ -17,6 +17,14 @@ Fliplet.Widget.register('com.fliplet.sso.saml2', function registerComponent() {
         opts.basicAuth = true;
       }
 
+      // PS-2445: opt-in. An Android WebView can't prove device compliance to the IdP.
+      if (opts.androidSystemBrowser && Modernizr.android && Fliplet.Env.get('platform') === 'native') {
+        inAppBrowser = false;
+
+        // Allow pause/resume events to be registered
+        opts.basicAuth = true;
+      }
+
       console.log(logPrefix, 'authorize() called, platform:', Fliplet.Env.get('platform'), 'inAppBrowser:', inAppBrowser);
 
       // Ensure a session is created so that the token being used by the system browser (or IAB) is the same
